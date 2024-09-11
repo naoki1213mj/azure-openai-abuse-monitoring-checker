@@ -3,7 +3,11 @@
 
 [English version is here](README.md)
 
-このスクリプトは、Azureテナント内のすべてのサブスクリプションにおいて、Azure OpenAI Serviceのリソースに対してabuse monitoring機能が無効になっているかを確認します。各リソースの `ContentLogging` 属性が `false` になっているかを確認し、abuse monitoringが無効化されているサブスクリプションの一覧をテキストファイルに出力します。
+このスクリプトは、Azure Entra IDテナント内のすべてのサブスクリプションにおいて、**Azure OpenAI Service** のリソースに対してabuse monitoring機能が**無効化されていない**かを確認します。各リソースの `ContentLogging` 属性が `false` でない、または設定されていない場合、そのサブスクリプションはabuse monitoringが無効化されておらず、オプトアウトされていない状態であることを示します。また、リソースレベルでも `ContentLogging` が `false` でないリソースをリストアップし、詳細を出力します。
+
+`ContentLogging` が `false` である場合、そのリソースは**abuse monitoringが無効化され、オプトアウトされている**ことを意味します。
+
+このスクリプトは `kind` が `"OpenAI"` であるAzure OpenAIリソースのみを対象としています。
 
 ## 前提条件
 
@@ -28,16 +32,19 @@
 
 2. **結果の確認**
 
-   スクリプト実行後、`abuse_monitoring_disabled_subscriptions.txt` にabuse monitoringが無効化されているサブスクリプションが出力されます。
+   スクリプト実行後、`abuse_monitoring_enabled_subscriptions_and_resources.txt` にabuse monitoringが無効化されていない（オプトアウトされていない）サブスクリプションとリソースが出力されます。
 
    ```bash
-   cat abuse_monitoring_disabled_subscriptions.txt
+   cat abuse_monitoring_enabled_subscriptions_and_resources.txt
    ```
+
+   出力には、サブスクリプションIDと、それに紐づく `ContentLogging` が `false` でないリソースの情報（リソース名、リソースグループ、および `ContentLogging` のステータス）が含まれます。
 
 ## 注意事項
 
-- `ContentLogging` が `false` でない、または設定されていないサブスクリプションはリストに含まれません。
-- Azure OpenAI Serviceリソースが存在しないサブスクリプションも自動的にabuse monitoringが無効化されていると見なされます。
+- **Azure OpenAIリソースに限定**: このスクリプトは `kind` が `"OpenAI"` であるリソースのみを対象としています。他のCognitive Servicesリソースは除外されます。
+- `ContentLogging` が `false` でない、または設定されていないサブスクリプションとリソースはリストに含まれます。
+- Azure OpenAI Serviceリソースが存在しないサブスクリプションは、確認対象外です。
 
 ## ライセンス
 
