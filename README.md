@@ -1,5 +1,7 @@
 # Azure OpenAI Service Abuse Monitoring Status Checker
 
+[日本語はこちら](README_JP.md)
+
 This script checks whether the `abuse monitoring` feature is disabled for Azure OpenAI Service resources across all subscriptions in your Azure tenant. It verifies if the `ContentLogging` attribute is set to `false` for each resource in the subscription, and outputs the list of subscriptions where abuse monitoring is disabled to a text file.
 
 ## Prerequisites
